@@ -9,11 +9,13 @@
 #include <vector>
 #include <algorithm>
 
-class Profesor;
+
 
 class User
 {
-	User(const std::string user, const std::string pass) : username(user), password(pass) {}
+public:
+	User (std::string &user, std::string &pass) : username(user), password(pass) {}
+	
 	virtual void show_menu() = 0;
 
 	std::string get_username()
@@ -27,8 +29,8 @@ class User
 	}
 
 	virtual ~User() = default;
-private:
 
+protected:
 	std::string username;
 	std::string password;
 };
@@ -36,10 +38,14 @@ private:
 class Student
 {
 public:
-	Student() {}
+	//Student(std::string user, std::string pass) : User(user, pass) {};
+
 	Student(size_t id, const std::string& nume)
 		: id_student(id), full_name(nume) {}
+	/*Student(size_t id, std::string& nume, std::string user, std::string pass)
+		: id_student(id), full_name(nume), User(user, pass) {};*/
 	
+
 	// actualizeaza numele
 	void update_name();
 	// afisare informatii student
@@ -48,10 +54,38 @@ public:
 	size_t get_id() const;
 	// obtine numele
 	std::string get_name() const;
-
+	~Student() {}
 private:
 	size_t id_student;
 	std::string full_name;
+};
+
+class Profesor
+{
+public:
+	Profesor() {}
+	Profesor(size_t id, const std::string& name, std::string& role)
+		: id_professor(id), full_name(name), professor_role(role) {}
+
+	void add_grades() {
+		// adaugarea notelor
+
+	}
+
+	void view_students() const {
+		// vizualizarea studentilor
+
+
+	}
+
+	size_t get_id()const;
+	std::string get_full_name() const;
+	std::string get_role() const;
+
+private:
+	size_t id_professor;
+	std::string full_name;
+	std::string professor_role;
 };
 
 class Grupa {
@@ -178,35 +212,6 @@ private:
 	size_t total_absences = 0;
 };
 
-class Profesor
-{
-public:
-	Profesor() {}
-	Profesor(size_t id, const std::string& name, std::string& role)
-		: id_professor(id), full_name(name), professor_role(role) {}
-
-	void add_grades() {
-		// Funcționalitate pentru adăugarea notelor
-		std::cout << "Adăugare note pentru profesorul " << full_name << "\n";
-		// Aici ar trebui să fie implementată logica pentru adăugarea notelor
-	}
-
-	void view_students() const {
-		// Funcționalitate pentru vizualizarea studenților
-		std::cout << "Vizualizare studenți pentru profesorul " << full_name << "\n";
-		// Aici ar trebui să fie implementată logica pentru vizualizarea studenților
-	}
-
-	size_t get_id()const;
-	std::string get_full_name() const;
-	std::string get_role() const;
-
-private:
-	size_t id_professor;
-	std::string full_name;
-	std::string professor_role;
-};
-
 class Catedra {
 public:
 	Catedra() {}
@@ -284,9 +289,22 @@ public:
 	}
 
 private:
+	std::map<size_t, Catedra> catedre;
+
 	SystemManagement() {}
 	static SystemManagement* instance;
-	std::map<size_t, Catedra> catedre;
+};
+
+class Administrator : public User
+{
+public:
+	Administrator(std::string &user, std::string &pass, SystemManagement *sistem) : User(user, pass), sistem(SystemManagement::getInstance()) {}
+	void show_menu() override;
+
+	~Administrator() override = default;
+
+private:
+	SystemManagement *sistem;
 };
 
 

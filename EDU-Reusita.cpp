@@ -1,28 +1,33 @@
 ﻿#include "academic_records.h"
 
-void Menu()
-{
-	std::cout << "1. Adauga catedra" << std::endl;
-	std::cout << "2. Adauga grupa la catedra" << std::endl;
-	std::cout << "3. Adauga studenti la catedra" << std::endl;
-	std::cout << "4. Adauga profesori la catedra" << std::endl;
-	std::cout << "5. Adauga curs la catedra" << std::endl;
-	std::cout << "6. Adauga studenti la grupa" << std::endl;
-	std::cout << "7. Adauga studenti la curs" << std::endl;
-	std::cout << "8. Adauga profesori la curs" << std::endl;
-	std::cout << "9. Afiseaza catedre" << std::endl;
-	std::cout << "10. Sterge catedra" << std::endl;
-	std::cout << "0. Iesi" << std::endl;
-
-}
+//void Menu()
+//{
+//	std::cout << "1. Adauga catedra" << std::endl;
+//	std::cout << "2. Adauga grupa la catedra" << std::endl;
+//	std::cout << "3. Adauga studenti la catedra" << std::endl;
+//	std::cout << "4. Adauga profesori la catedra" << std::endl;
+//	std::cout << "5. Adauga curs la catedra" << std::endl;
+//	std::cout << "6. Adauga studenti la grupa" << std::endl;
+//	std::cout << "7. Adauga studenti la curs" << std::endl;
+//	std::cout << "8. Adauga profesori la curs" << std::endl;
+//	std::cout << "9. Afiseaza catedre" << std::endl;
+//	std::cout << "10. Sterge catedra" << std::endl;
+//	std::cout << "0. Iesi" << std::endl;
+//
+//}
 
 SystemManagement *SystemManagement::instance = nullptr;
 
 int main() {
 	SystemManagement *sistem = SystemManagement::getInstance();
+
+	std::string user = "admin1", pass = "pass1";
+
+	Administrator admin(user, pass, sistem);
+	admin.show_menu();
 	short option;
 	
-	do
+	/*do
 	{
 		Menu();
 		std::cout << "Alege o optiune" << std::endl;
@@ -68,7 +73,7 @@ int main() {
 			break;
 		}
 		
-	} while (option != 0);
+	} while (option != 0);*/
 
 	return 0;
 }
