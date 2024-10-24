@@ -4,16 +4,16 @@
 
 #include <iostream>
 #include <string>
-#include <list>
 #include <map>
 #include <vector>
-#include <algorithm>
 
-
+class Administrator;
+class SystemManagement;
 
 class User
 {
 public:
+	User() = default;
 	User (std::string &user, std::string &pass) : username(user), password(pass) {}
 	
 	virtual void show_menu() = 0;
@@ -35,17 +35,22 @@ protected:
 	std::string password;
 };
 
-class Student
+class Student : public User
 {
 public:
-	//Student(std::string user, std::string pass) : User(user, pass) {};
+	// CTOR
+	Student() {}
 
-	Student(size_t id, const std::string& nume)
-		: id_student(id), full_name(nume) {}
-	/*Student(size_t id, std::string& nume, std::string user, std::string pass)
-		: id_student(id), full_name(nume), User(user, pass) {};*/
+	Student(std::string &user, std::string &pass) : User(user, pass) {};
 	
+	Student(size_t &id, const std::string& nume)
+		: id_student(id), full_name(nume) {}
 
+	Student(size_t &id, std::string& nume, std::string &user, std::string &pass)
+		: id_student(id), full_name(nume), User(user, pass) {};
+
+	// function
+	void show_menu() override;
 	// actualizeaza numele
 	void update_name();
 	// afisare informatii student
@@ -54,33 +59,38 @@ public:
 	size_t get_id() const;
 	// obtine numele
 	std::string get_name() const;
-	~Student() {}
+	~Student() override = default;
 private:
 	size_t id_student;
 	std::string full_name;
+	
 };
 
-class Profesor
+class Profesor : public User
 {
 public:
 	Profesor() {}
-	Profesor(size_t id, const std::string& name, std::string& role)
+	Profesor(std::string &user, std::string &pass) : User(user, pass) {}
+
+	Profesor(size_t id, const std::string &name, std::string &role)
 		: id_professor(id), full_name(name), professor_role(role) {}
+	
+	Profesor(size_t id, const std::string &name, std::string &role, std::string &user, std::string &pass)
+		: id_professor(id), full_name(name), professor_role(role), User(user, pass) {}
 
 	void add_grades() {
-		// adaugarea notelor
-
 	}
 
 	void view_students() const {
-		// vizualizarea studentilor
-
-
 	}
+
+	void show_menu() override;
 
 	size_t get_id()const;
 	std::string get_full_name() const;
 	std::string get_role() const;
+
+	~Profesor() override = default;
 
 private:
 	size_t id_professor;
@@ -95,11 +105,12 @@ public:
 	Grupa(size_t id, const std::string& name, int year) :
 		id_group(id), group_name(name), year_of_study(year) {}
 	// Constructor to initialize group with students
-	Grupa(std::vector<Student> &student_vector)
-	{ students.insert(students.begin(), student_vector.begin(), student_vector.end()); }
+	//Grupa(std::vector<Student> &student_vector)
+	//{ students.insert(students.begin(), student_vector.begin(), student_vector.end()); }
 	
 	// Add students to the group
 	void add_student(std::vector<Student> &);
+	void add_student(std::map<size_t, Student>::iterator &);
 	// Display students in the group
 	void display_students_in_group() const;
 	void display_all_students() const;
@@ -118,6 +129,7 @@ private:
 	size_t id_group;
 	std::string group_name;
 	int year_of_study;
+	//std::map<size_t, Student> students;
 	std::vector<Student> students;
 };
 
@@ -145,14 +157,12 @@ public:
 	// Constructor care inițializează un curs cu un ID și o denumire
 	Curs(size_t id, const std::string& name) :
 		id_course(id), course_name(name) {}
-
 	// Constructor de copiere care primește un curs și un profesor
 	Curs(Curs& obj_curs, Profesor& prof)
 		: id_course(obj_curs.id_course), course_name(obj_curs.course_name)
 	{
 		course_professors.push_back(prof);
 	}
-
 	// Constructor care primește un student și îl adaugă la curs
 	Curs(const Student& obj_student)
 	{
@@ -184,8 +194,11 @@ public:
 	// Get the course ID
 	size_t get_id();
 
-	// Get a list of students in the course
+	// get a list of students in the course
 	std::vector<Student> get_students() const;
+	// get a vector of id students
+	std::vector<size_t> get_id_students() const;
+	
 
 private:
 	size_t id_course;
@@ -206,7 +219,6 @@ public:
 	void display_absence() const;
 
 private:
-	std::vector<Student> absent_students;
 	std::string absence_date;
 	std::string absence_reason;
 	size_t total_absences = 0;
@@ -215,10 +227,9 @@ private:
 class Catedra {
 public:
 	Catedra() {}
-	Catedra(const std::string& name)
-		: catedra_name(name) {}
+	Catedra(size_t id, const std::string& name)
+		: id_catedra(id), catedra_name(name) {}
 
-	void display_catedre() const;
 	// Add a new student to the system
 	void add_students();
 	// Add a new professor to the system
@@ -245,30 +256,55 @@ public:
 	void display_professors_in_course() const;
 	// Display all groups
 	void display_groups() const;
+	//
+	void show_student_courses(size_t id) const;
+
+	const std::map<size_t, Student>& get_studenti() const {
+		return students;
+	}
+
+	const std::map<size_t, Profesor>& get_profesori() const {
+		return professors;
+	}
+
+	size_t get_id() const {
+		return id_catedra;
+	}
+
+	std::string get_nume_catedra() const {
+		return catedra_name;
+	}
+	
+	// Verifică dacă un student este în această catedră
+	bool has_student(size_t id_student) const {
+		return students.find(id_student) != students.end();
+	}
+
+	Student* authenticate_student(std::string &user, std::string &pass);
 
 private:
+	size_t id_catedra;
 	std::string catedra_name;
 
-	std::vector<Student> students;
-
-	std::vector<Profesor> professors;
 	std::vector<Curs> courses;
 
+	std::map<size_t, Student> students; // Lista de studenți
+	std::map<size_t, Profesor> professors; // Lista de profesori
 	std::map<size_t, Curs> course_prof_map;
 	std::map<size_t, Grupa> groups;
 };
 
 // Clasa SystemManagement
-class SystemManagement {
+class SystemManagement
+{
 public:
-
-	// Metodă statică pentru a obține instanța Singleton
-	static SystemManagement* getInstance() {
-		if (instance == nullptr) {
-			instance = new SystemManagement();
-		}
-		return instance;
-	}
+	// Metoda statica pentru a obtine instanta Singleton
+	static SystemManagement* getInstance();
+	// Functia care returneaza o harta de catedre
+	std::map<size_t, Catedra> &get_catedre();
+	// Funcția care returnează catedra la care apartine un student
+	// pe baza unui id_student
+	const Catedra* get_catedra_student(size_t id_student);
 
 	void add_catedra();
 	void display_catedre() const;
@@ -283,7 +319,15 @@ public:
 	void add_students_to_course();
 	void add_professor_to_course();
 
-	// Destructor pentru a curăța memoria
+	void update_info_catedra();					// Redenumire catedra
+
+	void display_students() const;				// Afisarea studentilor
+	void display_students_in_course() const;	// Afisarea studentilor intr-un curs
+	void display_students_in_group() const;		// Afisarea studentilor dintr-un grup
+	void display_professors() const;			// Afisarea profesorilor
+	void display_professors_in_course() const;	// Afisarea profesorilor dintr-un curs
+	void display_groups() const;				// Afisarea grupelor
+
 	~SystemManagement() {
 		delete instance;
 	}
@@ -298,7 +342,14 @@ private:
 class Administrator : public User
 {
 public:
+	Administrator() {}
+
+	Administrator(SystemManagement *sistem) : sistem(SystemManagement::getInstance()) {}
+
+	Administrator(std::string &user, std::string &pass) : User(user, pass) {}
+
 	Administrator(std::string &user, std::string &pass, SystemManagement *sistem) : User(user, pass), sistem(SystemManagement::getInstance()) {}
+	
 	void show_menu() override;
 
 	~Administrator() override = default;
@@ -306,7 +357,5 @@ public:
 private:
 	SystemManagement *sistem;
 };
-
-
 
 #endif // !ACADEMIC_RECORDS

@@ -1,21 +1,5 @@
 ﻿#include "academic_records.h"
 
-//void Menu()
-//{
-//	std::cout << "1. Adauga catedra" << std::endl;
-//	std::cout << "2. Adauga grupa la catedra" << std::endl;
-//	std::cout << "3. Adauga studenti la catedra" << std::endl;
-//	std::cout << "4. Adauga profesori la catedra" << std::endl;
-//	std::cout << "5. Adauga curs la catedra" << std::endl;
-//	std::cout << "6. Adauga studenti la grupa" << std::endl;
-//	std::cout << "7. Adauga studenti la curs" << std::endl;
-//	std::cout << "8. Adauga profesori la curs" << std::endl;
-//	std::cout << "9. Afiseaza catedre" << std::endl;
-//	std::cout << "10. Sterge catedra" << std::endl;
-//	std::cout << "0. Iesi" << std::endl;
-//
-//}
-
 SystemManagement *SystemManagement::instance = nullptr;
 
 int main() {
@@ -24,9 +8,55 @@ int main() {
 	std::string user = "admin1", pass = "pass1";
 
 	Administrator admin(user, pass, sistem);
-	admin.show_menu();
-	short option;
+
+	Profesor profesor;
 	
+	short option;
+	do
+	{
+		std::cout << "1. Student" << std::endl;
+		std::cout << "2. Profesor" << std::endl;
+		std::cout << "3. Administrator" << std::endl;
+		std::cout << "0. Iesire" << std::endl;
+		std::cout << "Alege optiune: ";
+		std::cin >> option;
+		
+		switch (option)
+		{
+		case 1:
+			// Logarea studentului
+			std::cout << "Introduceti username: ";
+			std::cin >> user;
+			std::cout << "Introduceti parola: ";
+			std::cin >> pass;
+			std::cin.ignore();
+			for (auto &catedra : sistem->get_catedre())
+			{
+				
+				Student *student = catedra.second.authenticate_student(user, pass);
+				if (student)
+				{
+					std::cout << "Logare reusita" << std::endl;
+					student->show_menu();
+					break;
+				}
+				std::cout << "Date incorecte" << std::endl;
+				break;
+			}
+		case 2:
+			profesor.show_menu();
+			break;
+		case 3:
+			admin.show_menu();
+			break;
+		case 0:
+			break;
+		default:
+			break;
+		}
+
+	} while (option != 0);
+
 	/*do
 	{
 		Menu();

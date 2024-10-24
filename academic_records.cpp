@@ -1,5 +1,5 @@
-﻿#include "academic_records.h"
-#include <vector>
+﻿#include <algorithm>
+#include "academic_records.h"
 
 /*------------------------Class Administrator---------------------------------*/
 
@@ -80,7 +80,7 @@ void Student::update_name()
 
 void Student::display_student() const
 {
-	std::cout << "ID: " << id_student << ", Nume: " << full_name;
+	std::cout  << "Nume: " << full_name;
 }
 
 size_t Student::get_id() const
@@ -93,9 +93,59 @@ std::string Student::get_name() const
 	return full_name;
 }
 
+void Student::show_menu()
+{
+	// Obține instanța SystemManagement
+	SystemManagement *system = SystemManagement::getInstance();
+
+	short option;
+	do
+	{
+		std::cout << "1. Afisare cursuri la care esti inscris" << std::endl;
+		std::cout << "2. Afisare note" << std::endl;
+		std::cout << "3. Afisare absente" << std::endl;
+		std::cout << "0. Iesire" << std::endl;
+
+		std::cin >> option;
+
+		switch (option)
+		{
+		case 1:
+		{
+			// Apelează get_catedra_student pentru a obține catedra studentului curent
+			const Catedra* catedra = system->get_catedra_student(id_student);
+
+			if (catedra)
+			{
+				std::cout << "Afisare cursuri inscrise pentru catedra: " << catedra->get_nume_catedra() << "\n";
+				catedra->show_student_courses(id_student);
+			}
+
+			else
+			{
+				std::cout << "Nu esti înscris la nicio catedră.\n";
+			}
+			break;
+		}
+		case 0:
+			break;
+		default:
+			break;
+		}
+
+	} while (option != 0);
+	
+	
+}
+
 /*----------------------End Class Student-----------------------------------*/
 
 /*----------------------Class Profesor-----------------------------------*/
+
+void Profesor::show_menu()
+{
+
+}
 
 std::string Profesor::get_full_name() const
 {
@@ -119,6 +169,12 @@ std::string Profesor::get_role() const
 void Grupa::add_student(std::vector<Student> &student_vector)
 {
 	students.insert(students.begin(), student_vector.begin(), student_vector.end());
+}
+
+void Grupa::add_student(std::map<size_t, Student>::iterator &it)
+{
+	
+	students.push_back(it->second);
 }
 
 void Grupa::remove_student(size_t student_id)
@@ -219,7 +275,7 @@ Curs Curs::get_course() const
 
 void Curs::add_students(const std::vector<Student> &student_list)
 {
-	course_students.insert(course_students.begin(), student_list.begin(), student_list.end());
+	course_students.insert(course_students.end(), student_list.begin(), student_list.end());
 }
 
 void Curs::add_single_student(const Student &new_student)
@@ -231,6 +287,14 @@ void Curs::remove_student(size_t id_student)
 {
 	course_students.erase(std::remove_if(course_students.begin(), course_students.end(),
 		[id_student](const Student& student) { return student.get_id() == id_student; }), course_students.end());
+}
+
+std::vector<size_t> Curs::get_id_students() const
+{
+	std::vector<size_t> ids;
+	for (const auto &student : course_students)
+		ids.push_back(student.get_id());
+	return ids;
 }
 
 void Curs::display_students_in_course()const
@@ -299,7 +363,36 @@ void Catedra::add_students()
 	system("cls");
 	std::cin.ignore();
 	size_t student_id = 1;
-	std::string student_name = "default";
+	std::string student_name;
+	if (!students.empty())
+	{
+		student_id = (--students.end())->first;
+		++student_id;
+		std::cout << "Pentru sfarsit apasa enter" << std::endl;
+		do
+		{
+			std::cout << "Introdu numele studentului: ";
+			std::getline(std::cin, student_name);
+
+			if (student_name.size() != 0)
+			{
+				std::string user, pass;
+				std::cout << "Introdu username-ul: ";
+				std::cin >> user;
+				std::cout << "Introdu parola: ";
+				std::cin >> pass;
+
+				Student student_temp(student_id, student_name, user, pass);
+				students[student_id] = student_temp;
+				++student_id;
+				std::cin.ignore();
+			}
+			else
+				break;
+
+		} while (true);
+	}
+
 
 	std::cout << "Pentru sfarsit apasa enter" << std::endl;
 	do
@@ -309,9 +402,17 @@ void Catedra::add_students()
 		
 		if (student_name.size() != 0)
 		{
-			//Student student_temp(student_id, student_name);
-			students.emplace_back(student_id, student_name);
+			std::string user, pass;
+			std::cout << "Introdu username-ul: ";
+			std::cin >> user;
+			std::cout << "Introdu parola: ";
+			std::cin >> pass;
+
+			Student student_temp(student_id, student_name, user, pass);
+			students[student_id] = student_temp;
+		//	students.emplace_back(student_id, student_name);
 			++student_id;
+			std::cin.ignore();
 			//students.push_back(student_temp);
 		}
 		else
@@ -330,25 +431,64 @@ void Catedra::add_professor()
 	std::string professor_role;
 	std::cout << "Pentru sfarsit apasa enter" << std::endl;
 
-	do
+	if (!professors.empty())
 	{
-		std::cout << "Introdu numele profesorului: ";
-		std::getline(std::cin, professor_name);
-		if (professor_name.size() != 0)
+		professor_id = (--professors.end())->first;
+		do
 		{
-			std::cout << "Introdu rolul profesorului (titular, asistent etc.): ";
-			std::getline(std::cin, professor_role);
+			std::cout << "Introdu numele profesorului: ";
+			std::getline(std::cin, professor_name);
+			if (professor_name.size() != 0)
+			{
+				std::cout << "Introdu rolul profesorului (titular, asistent etc.): ";
+				std::getline(std::cin, professor_role);
+				std::cout << "Introdu username: ";
+				std::string user, pass;
+				std::cin >> user;
+				std::cout << "Introdu parola: ";
+				std::cin >> pass;
+				std::cin.ignore();
+				// Creăm un obiect Profesor cu datele introduse
+				Profesor profesor_temp(professor_id, professor_name, professor_role, user, pass);
+				professors[professor_id] = profesor_temp;
+				//professors.emplace(profesor);
+				std::cout << "Profesorul a fost adaugat cu succes!" << std::endl;
+				++professor_id;
+			}
+			else
+				break;
 
-			// Creăm un obiect Profesor cu datele introduse
-			Profesor profesor(professor_id, professor_name, professor_role);
-			professors.push_back(profesor);
-			std::cout << "Profesorul a fost adaugat cu succes!" << std::endl;
-			++professor_id;
-		}
-		else
-			break;
+		} while (true);
+	}
 
-	} while (true);
+	else
+	{
+		do
+		{
+			std::cout << "Introdu numele profesorului: ";
+			std::getline(std::cin, professor_name);
+			if (professor_name.size() != 0)
+			{
+				std::cout << "Introdu rolul profesorului (titular, asistent etc.): ";
+				std::getline(std::cin, professor_role);
+				std::cout << "Introdu username: ";
+				std::string user, pass;
+				std::cin >> user;
+				std::cout << "Introdu parola: ";
+				std::cin >> pass;
+				std::cin.ignore();
+				// Creăm un obiect Profesor cu datele introduse
+				Profesor profesor_temp(professor_id, professor_name, professor_role, user, pass);
+				professors[professor_id] = profesor_temp;
+				//professors.emplace(profesor);
+				std::cout << "Profesorul a fost adaugat cu succes!" << std::endl;
+				++professor_id;
+			}
+			else
+				break;
+
+		} while (true);
+	}
 }
 
 void Catedra::add_course()
@@ -359,34 +499,98 @@ void Catedra::add_course()
 	size_t course_id = 1;
 	std::string course_name;
 
-	std::cout << "Pentru sfarsit apasa enter" << std::endl;
-
-	do
+	if (!courses.empty())
 	{
-		std::cout << "Introdu nume curs: ";
-		std::getline(std::cin, course_name);
-		if (course_name.size() != 0)
+		course_id = courses.size();
+		--course_id;
+		std::cout << "Pentru sfarsit apasa enter" << std::endl;
+
+		do
 		{
-			Curs curs_temp(course_id, course_name);
-			courses.push_back(curs_temp);
+			std::cout << "Introdu nume curs: ";
+			std::getline(std::cin, course_name);
+			if (course_name.size() != 0)
+			{
+				Curs curs_temp(course_id, course_name);
+				courses.push_back(curs_temp);
+				++course_id;
+			}
+			else
+				break;
+
+		} while (true);
+
+		course_id = (--course_prof_map.end())->first;
+		++course_id;
+		for (const auto &x : courses)
+		{
+			course_prof_map[course_id] = x;
 			++course_id;
 		}
-		else
-			break;
-
-	} while (true);
-	course_id = 1;
-	for (const auto &x : courses)
-	{
-		course_prof_map[course_id] = x;
-		++course_id;
 	}
+
+	else
+	{
+		std::cout << "Pentru sfarsit apasa enter" << std::endl;
+		do
+		{
+			std::cout << "Introdu nume curs: ";
+			std::getline(std::cin, course_name);
+			if (course_name.size() != 0)
+			{
+				Curs curs_temp(course_id, course_name);
+				courses.push_back(curs_temp);
+				++course_id;
+			}
+			else
+				break;
+
+		} while (true);
+		course_id = 1;
+		for (const auto &x : courses)
+		{
+			course_prof_map[course_id] = x;
+			++course_id;
+		}
+	}
+	
 }
 
 void Catedra::add_group()
 {
 	system("cls");
 	std::cin.ignore();
+
+	if (!groups.empty())
+	{
+		size_t group_id = (--groups.end())->first;
+		++group_id;
+		std::string group_name;
+		int group_year = 0;
+
+		std::cout << "Pentru sfarsit apasa enter" << std::endl;
+		do
+		{
+			std::cout << "Introdu denumirea grupei: ";
+			std::getline(std::cin, group_name);
+			if (!group_name.empty())
+			{
+				std::cout << "Introdu anul grupei: ";
+				std::cin >> group_year;
+				std::cin.ignore();
+				// Creăm obiectul de tip Grupa și îl adăugăm în map
+				Grupa group_temp(group_id, group_name, group_year);
+
+				groups.emplace(group_id, group_temp);
+				++group_id;
+				std::cout << "Grupa a fost adaugata cu succes!\n";
+			}
+			else
+				break;
+
+		} while (true);
+	}
+
 	size_t group_id = 1;
 	std::string group_name;
 	int group_year = 0;
@@ -417,12 +621,13 @@ void Catedra::add_group()
 void Catedra::add_students_to_group()
 {
 	system("cls");
-	if (groups.empty())
+	std::cin.ignore();
+	if (students.empty())
 	{
-		std::cout << "Nu exista grupe!\n";
+		std::cout << "Nu exista studenti!\n";
 		return;
 	}
-	std::cin.ignore();
+
 	for (const auto &group : groups)
 	{
 		std::cout << group.first << ": ";
@@ -441,27 +646,42 @@ void Catedra::add_students_to_group()
 		return;
 	}
 
-	std::vector<Student> students_in_group;
-
-	std::cout << "Pentru sfarsit apasa enter" << std::endl;
-	size_t student_id = 1;
-	std::string student_name;
+	for (auto &x : students)
+	{
+		std::cout << x.first << ": ";
+		x.second.display_student();
+		std::cout << std::endl;
+	}
+	size_t id;
 	do
 	{
-		std::cout << "Introdu numele studentului: ";
-		std::getline(std::cin, student_name);
-		if (!student_name.empty())
-		{
-			students_in_group.emplace_back(student_id, student_name);
-			++student_id;
-		}
-		else
+		std::cout << "Alege id-ul studentilor(pentru iesire apasa 0):" << std::endl;
+		std::cin >> id;
+		if (id == 0)
 			break;
+		auto it = students.find(id);
+		groups[group_id].add_student(it);
+
 	} while (true);
+	
 
-	groups[group_id].add_student(students_in_group);
-
-	std::cout << "Studenți adăugați cu succes!\n";
+	//std::vector<Student> students_in_group;
+	//std::cout << "Pentru sfarsit apasa enter" << std::endl;
+	//size_t student_id = 1;
+	//std::string student_name;
+	//do
+	//{
+	//	std::cout << "Introdu numele studentului: ";
+	//	std::getline(std::cin, student_name);
+	//	if (!student_name.empty())
+	//	{
+	//		students_in_group.emplace_back(student_id, student_name);
+	//		++student_id;
+	//	}
+	//	else
+	//		break;
+	//} while (true);
+	//groups[group_id].add_student(students_in_group);
 }
 
 void Catedra::add_professor_to_course()
@@ -493,13 +713,14 @@ void Catedra::add_professor_to_course()
 	std::cin >> num_professors;
 	std::cin.ignore();
 	std::cout << std::endl;
+
 	if (professors.empty())
 	{
 		std::cout << "Nu sunt profesori adaugati!" << std::endl;
 		return;
 	}
 	for (const auto &professor : professors)
-		std::cout << professor.get_id() << ": " << professor.get_full_name() << std::endl;
+		std::cout << professor.second.get_id() << ": " << professor.second.get_full_name() << std::endl;
 
 	int i = 0;
 	while (i < num_professors)
@@ -509,16 +730,17 @@ void Catedra::add_professor_to_course()
 		std::cin >> professor_id;
 		std::cin.ignore();
 		std::cout << std::endl;
-
-		auto it_professor = std::find_if(professors.begin(), professors.end(), [&](const Profesor &p)
-		{return p.get_id() == professor_id; });
+		auto it_professor = professors.find(professor_id);
+		//auto it_professor = std::find_if(professors.begin(), professors.end(), [&](const Profesor &p)
+		//{return p.get_id() == professor_id; });
 
 		if (it_professor != professors.end())
 		{
-			it_course->second.add_professor(*it_professor);
+			it_course->second.add_professor(it_professor->second);
 		}
 		++i;
 	}
+	std::cout << "Profesori adaugati cu succes!";
 }
 
 void Catedra::add_students_to_course()
@@ -556,7 +778,8 @@ void Catedra::add_students_to_course()
 
 	// Afișează studenții din fiecare grupă
 	std::cout << "Studenții disponibili:\n";
-	for (const auto& grupa_entry : groups) {
+	for (const auto& grupa_entry : groups) 
+	{
 		std::cout << "Grupa " << grupa_entry.first << ":\n";
 		grupa_entry.second.display_students_in_group();  // Metodă pentru afișarea studenților din grupă
 	}
@@ -566,21 +789,24 @@ void Catedra::add_students_to_course()
 	std::cin >> group_id;
 	std::cin.ignore();
 
-	// Caută grupa în mapa grupe
+	// Cauta grupa in mapa grupe
 	auto group_it = groups.find(group_id);
-	if (group_it == groups.end()) {
+	if (group_it == groups.end()) 
+	{
 		std::cout << "Nu s-a găsit grupa cu acest ID.\n";
 		return;
 	}
 
-	// Obține studenții din grupă
+	// Obține studentii din grupa
 	const Grupa& grupa = group_it->second;
 	auto studenti = grupa.get_students();
+	course_it->second.add_students(studenti);
 
-	// Adaugă studenții la cursul selectat
-	for (const auto &student : studenti) {
-		course_it->second.add_single_student(student); // Metoda pentru a adăuga un student la curs
-	}
+	// Adauga studentii la cursul selectat
+	//for (const auto &student : studenti)
+	//{
+	//	course_it->second.add_single_student(student); // Metoda pentru a adauga un student la curs
+	//}
 
 	std::cout << "Studenți adăugați la cursul selectat.\n";
 }
@@ -636,11 +862,21 @@ void Catedra::display_students() const
 	}
 }
 
-void Catedra::display_catedre() const
+void Catedra::show_student_courses(size_t id) const
 {
-	std::cout << catedra_name;
-}
+	for (const auto &x : course_prof_map)
+	{
+		// Obține lista de ID-uri ale studenților din curs
+		std::vector<size_t> student_ids = x.second.get_id_students();
 
+		// Verifică dacă ID-ul studentului se află în lista de ID-uri
+		if (std::find(student_ids.begin(), student_ids.end(), id) != student_ids.end())
+		{
+			// Afișează detalii despre curs dacă studentul este înscris la acest curs
+			x.second.display_course();
+		}
+	}
+}
 // Funcție pentru a afișa toți profesorii
 void Catedra::display_professors() const
 {
@@ -651,8 +887,8 @@ void Catedra::display_professors() const
 	else {
 		std::cout << "Lista profesorilor:\n";
 		for (const auto& profesor : professors) {
-			std::cout << profesor.get_id() << ": " <<
-				profesor.get_full_name() << " (" << profesor.get_role() << ")" << std::endl;
+			std::cout << profesor.second.get_id() << ": " <<
+				profesor.second.get_full_name() << " (" << profesor.second.get_role() << ")" << std::endl;
 		}
 	}
 }
@@ -688,9 +924,9 @@ void Catedra::display_students_in_group() const
 		return;
 	}
 	// Afișează studenții din grupa selectată
-	const Grupa& group_obj = group_it->second;
+	//const Grupa& group_obj = group_it->second;
 	std::cout << "Studenții din grupa " << id_group << ":\n";
-	group_obj.display_students_in_group();
+	group_it->second.display_students_in_group();
 }
 
 void Catedra::display_students_in_course() const
@@ -732,6 +968,16 @@ void Catedra::display_professors_in_course() const
 	it_professor->second.display_professors_in_course();
 }
 
+Student* Catedra::authenticate_student(std::string &usern, std::string &pass)
+{
+	for (auto &pair : students)
+	{
+		if (pair.second.get_username() == usern && pair.second.get_passw() == pass)
+			return &(pair.second);
+		return nullptr; // daca nu se găseste studentul
+	}
+}
+
 /*----------------------End Class Catedra-----------------------------------------*/
 
 /*----------------------Class SystemManagement-----------------------------------*/
@@ -741,22 +987,46 @@ void SystemManagement::add_catedra()
 	system("cls");
 	std::cin.ignore();
 	std::cout << "Pentru sfarsit apasa enter" << std::endl;
-	short i = 1;
+	short id = 1;
 
-	do
+	if (!catedre.empty())
 	{
-		std::cout << "Introdu nume catedra: ";
-		std::string nume_catedra;
-		std::getline(std::cin, nume_catedra);
-		if (!nume_catedra.empty())
-		{
-			catedre[i] = Catedra(nume_catedra);
-			++i;
-		}
-		else
-			break;
+		id = (--catedre.end())->first;
 
-	} while (true);
+		do
+		{
+			std::cout << "Introdu nume catedra: ";
+			std::string nume_catedra;
+			std::getline(std::cin, nume_catedra);
+			if (!nume_catedra.empty())
+			{
+				catedre[id] = Catedra(id, nume_catedra);
+				++id;
+			}
+			else
+				break;
+
+		} while (true);
+	}
+
+	else
+	{
+		do
+		{
+			std::cout << "Introdu nume catedra: ";
+			std::string nume_catedra;
+			std::getline(std::cin, nume_catedra);
+			if (!nume_catedra.empty())
+			{
+				catedre[id] = Catedra(id, nume_catedra);
+				++id;
+			}
+			else
+				break;
+
+		} while (true);
+	}
+	
 
 }
 
@@ -765,9 +1035,8 @@ void SystemManagement::remove_catedra()
 	system("cls");
 	for (const auto catedra_entry : catedre)
 	{
-		std::cout << catedra_entry.first << ": ";
-		catedra_entry.second.display_catedre();
-		std::cout << std::endl;
+		std::cout << catedra_entry.first << ": " 
+			<< catedra_entry.second.get_nume_catedra() << std::endl;
 	}
 	std::cout << "introdu id catedra: ";
 	int id_catedra;
@@ -789,34 +1058,38 @@ void SystemManagement::display_catedre() const
 	system("cls");
 	for (const auto catedra_entry : catedre)
 	{
-		std::cout << catedra_entry.first << ": ";
-		catedra_entry.second.display_catedre();
-		std::cout << std::endl;
+		std::cout << catedra_entry.first << ": " 
+			<< catedra_entry.second.get_nume_catedra() << std::endl;
 	}
 }
-//
-//// Implementare actualizare informatii catedra
-//void SystemManagement::update_info_catedra() {
-//	size_t id;
-//	std::cout << "Introdu ID-ul catedrei pe care vrei sa o actualizezi: ";
-//	std::cin >> id;
-//
-//	auto it = catedre.find(id);
-//	if (it == catedre.end()) {
-//		std::cout << "Catedra nu exista!\n";
-//		return;
-//	}
-//
-//	std::string new_name;
-//	std::cout << "Introdu noul nume pentru catedra: ";
-//	std::cin.ignore();
-//	std::getline(std::cin, new_name);
-//
-////	it->second.set_name(new_name); 
-//	std::cout << "Informatiile catedrei au fost actualizate cu succes.\n";
-//}
-//
-void SystemManagement::add_group_to_catedra() {
+
+// Implementare actualizare informatii catedra
+void SystemManagement::update_info_catedra() {
+	size_t id;
+	std::cout << "Introdu ID-ul catedrei pe care vrei sa o actualizezi: ";
+	std::cin >> id;
+
+	auto it = catedre.find(id);
+	if (it == catedre.end()) {
+		std::cout << "Catedra nu exista!\n";
+		return;
+	}
+
+	std::string new_name;
+	std::cout << "Introdu noul nume pentru catedra: ";
+	std::cin.ignore();
+	std::getline(std::cin, new_name);
+
+//	it->second.set_name(new_name); 
+	std::cout << "Informatiile catedrei au fost actualizate cu succes.\n";
+}
+
+void SystemManagement::add_group_to_catedra()
+{
+	for (const auto &x : catedre)
+		std::cout << x.first << ": " <<
+		x.second.get_nume_catedra() << std::endl;
+
 	size_t id_catedra;
 	std::cout << "Introdu ID-ul catedrei: ";
 	std::cin >> id_catedra;
@@ -833,11 +1106,17 @@ void SystemManagement::add_group_to_catedra() {
 void SystemManagement::add_students_to_catedra()
 {
 	system("cls");
+
+	for (const auto &x : catedre)
+		std::cout << x.first << ": " <<
+		x.second.get_nume_catedra() << std::endl;
+
 	std::cout << "Introdu id-ul catedra: ";
 	size_t catedra_id;
 	std::cin >> catedra_id;
 
 	auto it_catedra = catedre.find(catedra_id);
+	
 	if (it_catedra != catedre.end())
 	{
 		it_catedra->second.add_students();
@@ -850,6 +1129,11 @@ void SystemManagement::add_students_to_catedra()
 void SystemManagement::add_professor_to_catedra()
 {
 	system("cls");
+
+	for (const auto &x : catedre)
+		std::cout << x.first << ": " <<
+		x.second.get_nume_catedra() << std::endl;
+
 	std::cout << "Introdu id-ul catedra: ";
 	size_t catedra_id;
 	std::cin >> catedra_id;
@@ -862,9 +1146,15 @@ void SystemManagement::add_professor_to_catedra()
 		std::cout << "Profesori adaugati cu succes" << std::endl;
 	}
 }
+
 void SystemManagement::add_courses_to_catedra()
 {
 	system("cls");
+
+	for (const auto &x : catedre)
+		std::cout << x.first << ": " <<
+		x.second.get_nume_catedra() << std::endl;
+
 	std::cout << "Introdu id-ul catedra: ";
 	size_t catedra_id;
 	std::cin >> catedra_id;
@@ -881,6 +1171,11 @@ void SystemManagement::add_courses_to_catedra()
 void SystemManagement::add_students_to_group()
 {
 	system("cls");
+
+	for (const auto &x : catedre)
+		std::cout << x.first << ": " <<
+		x.second.get_nume_catedra() << std::endl;
+
 	std::cout << "Introdu id-ul catedra: ";
 	size_t catedra_id;
 	std::cin >> catedra_id;
@@ -897,6 +1192,11 @@ void SystemManagement::add_students_to_group()
 void SystemManagement::add_students_to_course()
 {
 	system("cls");
+
+	for (const auto &x : catedre)
+		std::cout << x.first << ": " <<
+		x.second.get_nume_catedra() << std::endl;
+
 	std::cout << "Introdu id-ul catedra: ";
 	size_t catedra_id;
 	std::cin >> catedra_id;
@@ -906,13 +1206,18 @@ void SystemManagement::add_students_to_course()
 	if (it_catedra != catedre.end())
 	{
 		it_catedra->second.add_students_to_course();
-		std::cout << "Profesori adaugati cu succes" << std::endl;
+		std::cout << "Studenti adaugati cu succes" << std::endl;
 	}
 }
 
 void SystemManagement::add_professor_to_course()
 {
 	system("cls");
+
+	for (const auto &x : catedre)
+		std::cout << x.first << ": " <<
+		x.second.get_nume_catedra() << std::endl;
+
 	std::cout << "Introdu id-ul catedra: ";
 	size_t catedra_id;
 	std::cin >> catedra_id;
@@ -926,4 +1231,153 @@ void SystemManagement::add_professor_to_course()
 	}
 }
 
+void SystemManagement::display_students() const
+{
+	system("cls");
+	for (const auto &pair : catedre)
+		std::cout << pair.first << ": "
+		<< pair.second.get_nume_catedra();
+
+	std::cout << "Alege catedra: ";
+	short id_catedra;
+	std::cin >> id_catedra;
+
+	auto it_catedra = catedre.find(id_catedra);
+	if (it_catedra == catedre.end())
+	{
+		std::cout << "Nu este asa catedra!";
+	}
+
+	it_catedra->second.display_students();
+}
+
+void SystemManagement::display_professors() const
+{
+	system("cls");
+	
+	for (const auto &pair : catedre)
+		std::cout << pair.first << ": "
+		<< pair.second.get_nume_catedra();
+
+	std::cout << "Alege catedra: ";
+	short id_catedra;
+	std::cin >> id_catedra;
+
+	auto it_catedra = catedre.find(id_catedra);
+	if (it_catedra == catedre.end())
+	{
+		std::cout << "Nu este asa catedra!";
+	}
+
+	it_catedra->second.display_professors();
+}
+
+void SystemManagement::display_students_in_group() const
+{
+	system("cls");
+
+	for (const auto &pair : catedre)
+		std::cout << pair.first << ": "
+		<< pair.second.get_nume_catedra();
+
+	std::cout << "Alege catedra: ";
+	short id_catedra;
+	std::cin >> id_catedra;
+
+	auto it_catedra = catedre.find(id_catedra);
+	if (it_catedra == catedre.end())
+	{
+		std::cout << "Nu este asa catedra!";
+	}
+	
+	it_catedra->second.display_students_in_group();
+}
+
+void SystemManagement::display_students_in_course() const
+{
+	system("cls");
+
+	for (const auto &pair : catedre)
+		std::cout << pair.first << ": "
+		<< pair.second.get_nume_catedra();
+
+	std::cout << "Alege catedra: ";
+	short id_catedra;
+	std::cin >> id_catedra;
+
+	auto it_catedra = catedre.find(id_catedra);
+	if (it_catedra == catedre.end())
+	{
+		std::cout << "Nu este asa catedra!";
+	}
+
+	it_catedra->second.display_students_in_course();
+}
+
+void SystemManagement::display_professors_in_course() const
+{
+	system("cls");
+
+	for (const auto &pair : catedre)
+		std::cout << pair.first << ": "
+		<< pair.second.get_nume_catedra();
+
+	std::cout << "Alege catedra: ";
+	short id_catedra;
+	std::cin >> id_catedra;
+
+	auto it_catedra = catedre.find(id_catedra);
+	if (it_catedra == catedre.end())
+	{
+		std::cout << "Nu este asa catedra!";
+	}
+
+	it_catedra->second.display_professors_in_course();
+}
+
+void SystemManagement::display_groups() const
+{
+	system("cls");
+	
+	for (const auto &pair : catedre)
+		std::cout << pair.first << ": "
+		<< pair.second.get_nume_catedra();
+
+	std::cout << "Alege catedra: ";
+	short id_catedra;
+	std::cin >> id_catedra;
+
+	auto it_catedra = catedre.find(id_catedra);
+	if (it_catedra == catedre.end())
+	{
+		std::cout << "Nu este asa catedra!";
+	}
+
+	it_catedra->second.display_groups();
+}
+
+
+const Catedra* SystemManagement::get_catedra_student(size_t id_student) {
+	for (const auto& catedra_pair : catedre)
+	{
+		const Catedra& catedra = catedra_pair.second;
+		if (catedra.has_student(id_student))
+		{ // Verifică dacă studentul este în catedră
+			return &catedra; // Returnează pointer către catedra găsită
+		}
+	}
+	return nullptr; // Returnează nullptr dacă studentul nu este găsit în nicio catedră
+}
+
+std::map<size_t, Catedra>& SystemManagement::get_catedre()
+{
+	return catedre;
+}
+
+SystemManagement* SystemManagement::getInstance() {
+	if (instance == nullptr) {
+		instance = new SystemManagement();
+	}
+	return instance;
+}
 /*------------------------End Class SystemManagement---------------------------------*/
