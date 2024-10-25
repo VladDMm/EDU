@@ -276,9 +276,9 @@ public:
 	}
 	
 	// Verifică dacă un student este în această catedră
-	bool has_student(size_t id_student) const {
-		return students.find(id_student) != students.end();
-	}
+	bool has_student(size_t id_student) const;
+	// Verifica daca un profesor este in aceasta catedra
+	bool has_professor(size_t id_profesor) const;
 
 	Student* authenticate_student(std::string &user, std::string &pass);
 
@@ -304,7 +304,10 @@ public:
 	std::map<size_t, Catedra> &get_catedre();
 	// Funcția care returnează catedra la care apartine un student
 	// pe baza unui id_student
-	const Catedra* get_catedra_student(size_t id_student);
+	const Catedra *get_catedra_student(size_t id_student);
+	// Funcția care returnează catedra la care apartine un profesor
+	// pe baza unui id_profesor
+	const Catedra *get_catedra_profesor(size_t id_profesor);
 
 	void add_catedra();
 	void display_catedre() const;

@@ -57,53 +57,6 @@ int main() {
 
 	} while (option != 0);
 
-	/*do
-	{
-		Menu();
-		std::cout << "Alege o optiune" << std::endl;
-		std::cin >> option;
-
-		switch (option)
-		{
-		case 1:
-			sistem->add_catedra();
-			break;
-		case 2:
-			sistem->add_group_to_catedra();
-			break;
-		case 3:
-			sistem->add_students_to_catedra();
-			break;
-		case 4:
-			sistem->add_professor_to_catedra();
-			break;
-		case 5:
-			sistem->add_courses_to_catedra();
-			break;
-		case 6:
-			sistem->add_students_to_group();
-			break;
-		case 7:
-			sistem->add_students_to_course();
-			break;
-		case 8:
-			sistem->add_professor_to_course();
-			break;
-		case 9:
-			sistem->display_catedre();
-			break;
-		case 10:
-			sistem->remove_catedra();
-			break;
-		case 0:
-			std::cout << "La revedere!" << std::endl;
-			break;
-		default:
-			std::cout << "Nu este asa optiune!" << std::endl;
-			break;
-		}
-		
-	} while (option != 0);*/
 
 	return 0;
 }
