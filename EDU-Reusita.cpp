@@ -2,12 +2,13 @@
 
 SystemManagement *SystemManagement::instance = nullptr;
 
-int main() {
+int main() 
+{
 	SystemManagement *sistem = SystemManagement::getInstance();
 
-	std::string user = "admin1", pass = "pass1";
+	std::string user_default = "admin", pass_default = "admin";
 
-	Administrator admin(user, pass, sistem);
+	Administrator admin(user_default, pass_default, sistem);
 
 	Profesor profesor;
 	
@@ -20,7 +21,9 @@ int main() {
 		std::cout << "0. Iesire" << std::endl;
 		std::cout << "Alege optiune: ";
 		std::cin >> option;
-		
+
+		std::string user, pass;
+
 		switch (option)
 		{
 		case 1:

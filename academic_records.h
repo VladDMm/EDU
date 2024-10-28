@@ -78,15 +78,9 @@ public:
 	Profesor(size_t id, const std::string &name, std::string &role, std::string &user, std::string &pass)
 		: id_professor(id), full_name(name), professor_role(role), User(user, pass) {}
 
-	void add_grades() {
-	}
-
-	void view_students() const {
-	}
-
 	void show_menu() override;
 
-	size_t get_id()const;
+	size_t get_id_prof() const;
 	std::string get_full_name() const;
 	std::string get_role() const;
 
@@ -137,7 +131,6 @@ class Nota {
 public:
 	Nota() = default;
 
-	std::vector<double>& get_note();
 	void add_grade(double n);
 	// Calculate the average grade
 	double calculate_average() const;
@@ -147,7 +140,9 @@ public:
 	void display_grades() const;
 
 private:
-	std::vector<double> grades;
+	std::string course_name;
+	std::map<Student, std::vector<std::pair<std::string, double>>> grades;
+	//std::vector<double> grades;
 };
 
 class Curs {
@@ -170,9 +165,9 @@ public:
 	}
 
 	// Get the course details
-	Curs get_course() const;
+	//Curs get_course() const;
 
-	// Display the course details
+	// Display the course details(name)
 	void display_course() const;
 
 	// Display students in the course
@@ -194,17 +189,17 @@ public:
 	// Get the course ID
 	size_t get_id();
 
-	// get a list of students in the course
-	std::vector<Student> get_students() const;
-	// get a vector of id students
+	// Get a vector of id students
 	std::vector<size_t> get_id_students() const;
-	
+	// Get a vector of id professors
+	std::vector<size_t> get_id_professors() const;
 
 private:
 	size_t id_course;
 	std::string course_name;
 	std::vector<Student> course_students;
 	std::vector<Profesor> course_professors;
+	std::vector<Nota> note_studenti;
 };
 
 class Absente {
@@ -248,6 +243,8 @@ public:
 	void display_students() const;
 	// Display students in a course
 	void display_students_in_course() const;
+	// Afisare studentii de la curs dupa cursurile care ii apartin profesorului
+	void display_students_in_course_by_prof(size_t) const;
 	// Display students in a group
 	void display_students_in_group() const;
 	// Display all professors
@@ -256,22 +253,24 @@ public:
 	void display_professors_in_course() const;
 	// Display all groups
 	void display_groups() const;
-	//
+	// Afisare cursuri ale studentului dupa id-ul lui
 	void show_student_courses(size_t id) const;
-
+	// Afisarea cursurilor care ii apartine profesorului
+	void show_professor_courses(size_t) const;
+	// Obtine mapa cu studenti
 	const std::map<size_t, Student>& get_studenti() const {
 		return students;
 	}
-
+	// Obtine mapa cu profesori
 	const std::map<size_t, Profesor>& get_profesori() const {
 		return professors;
 	}
-
+	// Obtine id catedra;
 	size_t get_id() const {
 		return id_catedra;
 	}
-
-	std::string get_nume_catedra() const {
+	// Obtine nume catedra
+	std::string get_name_catedra() const {
 		return catedra_name;
 	}
 	
@@ -279,7 +278,7 @@ public:
 	bool has_student(size_t id_student) const;
 	// Verifica daca un profesor este in aceasta catedra
 	bool has_professor(size_t id_profesor) const;
-
+	// Returneaza un obiect student, carui ii apartine user/pass-ul
 	Student* authenticate_student(std::string &user, std::string &pass);
 
 private:
@@ -290,8 +289,8 @@ private:
 
 	std::map<size_t, Student> students; // Lista de studenți
 	std::map<size_t, Profesor> professors; // Lista de profesori
-	std::map<size_t, Curs> course_prof_map;
-	std::map<size_t, Grupa> groups;
+	std::map<size_t, Curs> course_prof_map; // Lista de cursuri cu profesori, studenti
+	std::map<size_t, Grupa> groups; // Lista de grupe cu studentii lor
 };
 
 // Clasa SystemManagement
