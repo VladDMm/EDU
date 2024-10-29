@@ -44,10 +44,26 @@ int main()
 					break;
 				}
 				std::cout << "Date incorecte" << std::endl;
-				break;
 			}
+			break;
 		case 2:
-			profesor.show_menu();
+			std::cout << "Introduceti username: ";
+			std::cin >> user;
+			std::cout << "Introduceti parola: ";
+			std::cin >> pass;
+			std::cin.ignore();
+			for (auto &catedra : sistem->get_catedre())
+			{
+
+				Profesor *profesor = catedra.second.authenticate_profesor(user, pass);
+				if (profesor)
+				{
+					std::cout << "Logare reusita" << std::endl;
+					profesor->show_menu();
+					break;
+				}
+				std::cout << "Date incorecte" << std::endl;
+			}
 			break;
 		case 3:
 			admin.show_menu();

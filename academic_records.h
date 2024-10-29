@@ -7,8 +7,16 @@
 #include <map>
 #include <vector>
 
+#include <utility>  // for std::pair
+#include <chrono>   // for std::chrono::system_clock
+#include <iomanip>  // for std::put_time
+#include <sstream>  // for std::stringstream
+
 class Administrator;
 class SystemManagement;
+class NotaDetaliata;
+class Absente;
+class AbsentaDetaliata;
 
 class User
 {
@@ -48,6 +56,16 @@ public:
 
 	Student(size_t &id, std::string& nume, std::string &user, std::string &pass)
 		: id_student(id), full_name(nume), User(user, pass) {};
+
+	// Suprascrierea operatorului <
+	bool operator<(const Student& other) const {
+		// Compară întâi după nume
+		if (full_name != other.full_name) {
+			return full_name < other.full_name;
+		}
+		// Dacă numele sunt egale, compară după ID
+		return id_student < other.id_student;
+	}
 
 	// function
 	void show_menu() override;
@@ -129,35 +147,106 @@ private:
 
 class Nota {
 public:
-	Nota() = default;
+	Nota() {}
 
-	void add_grade(double n);
-	// Calculate the average grade
-	double calculate_average() const;
-	// Search for a specific grade
-	void search_grade(double grade_to_search) const;
-	// Display all grades
+	Nota(const std::string& course) : course_name(course) {}
+
+	// Adaugă o notă pentru un student
+	void add_grade(std::string, Student& student, double);
+
+	// Calculează media notelor pentru un student
+	double calculate_average(const Student& student) const;
+
+	// Caută o notă specifică pentru un student
+	bool search_grade(const Student&, double) const;
+
+	// Afișează toate notele pentru toți studenții
 	void display_grades() const;
 
 private:
-	std::string course_name;
-	std::map<Student, std::vector<std::pair<std::string, double>>> grades;
-	//std::vector<double> grades;
+	std::string course_name;  // Numele cursului pentru care se țin notele
+	std::map<Student, std::vector<NotaDetaliata>> grades;  // Map între student și notele sale detaliate
+};
+
+class NotaDetaliata {
+public:
+	NotaDetaliata(double value, const std::chrono::system_clock::time_point &date)
+		: value(value), date(date) {}
+
+	double get_value() const { return value; }
+
+	std::string get_date() const
+	{
+		std::time_t tt = std::chrono::system_clock::to_time_t(date);
+		std::stringstream ss;
+		ss << std::put_time(std::localtime(&tt), "%Y-%m-%d %H:%M:%S");
+		return ss.str();
+	}
+
+private:
+	double value;
+	std::chrono::system_clock::time_point date; // Data și ora adăugării notei
+};
+
+class Absente {
+public:
+	Absente() {}
+	Absente(const std::string &course_name) : course_name(course_name) {}
+
+	void add_absence(std::string &, const Student &, std::string &);
+
+	void remove_absence(const Student &);
+
+	void display_absence() const;
+
+private:
+	std::string course_name;  // Numele cursului pentru care se țin notele
+	std::map<Student, std::vector<AbsentaDetaliata>> absences;  // Map între student și notele sale detaliate
+
+};
+
+class AbsentaDetaliata {
+public:
+	AbsentaDetaliata(std::string reason, const std::chrono::system_clock::time_point &date)
+		: reason(reason), date(date)
+	{
+		++total_absences;
+	}
+
+	std::string get_reason() const { return reason; }
+
+	short get_total_absence() const { return total_absences; }
+
+	std::string get_date() const
+	{
+		std::time_t tt = std::chrono::system_clock::to_time_t(date);
+		std::stringstream ss;
+		ss << std::put_time(std::localtime(&tt), "%Y-%m-%d %H:%M:%S");
+		return ss.str();
+	}
+
+private:
+	size_t total_absences = 0;
+	std::string reason;
+	std::chrono::system_clock::time_point date; // Data și ora adăugării notei
 };
 
 class Curs {
 public:
 	Curs() {}
 	~Curs() {}
+
 	// Constructor care inițializează un curs cu un ID și o denumire
 	Curs(size_t id, const std::string& name) :
 		id_course(id), course_name(name) {}
+	
 	// Constructor de copiere care primește un curs și un profesor
 	Curs(Curs& obj_curs, Profesor& prof)
 		: id_course(obj_curs.id_course), course_name(obj_curs.course_name)
 	{
 		course_professors.push_back(prof);
 	}
+
 	// Constructor care primește un student și îl adaugă la curs
 	Curs(const Student& obj_student)
 	{
@@ -166,6 +255,9 @@ public:
 
 	// Get the course details
 	//Curs get_course() const;
+
+	 // Adaugă o notă pentru un student într-un curs
+	void add_grade_for_student(std::string, Student &, double);
 
 	// Display the course details(name)
 	void display_course() const;
@@ -176,12 +268,20 @@ public:
 	// Add a professor to the course
 	void add_professor(Profesor &p_tmp);
 
+	// Adauga absenta pentru student. Parametri - nume curs; - obiect student; -absenta
+	void add_absence_for_student(std::string &, const Student &, std::string&);
+
 	// Add students to the course
 	void add_students(const std::vector<Student> &);
+
 	void add_single_student(const Student &);
 
 	// Display the professors of the course
 	void display_professors_in_course()const;
+
+	void display_students_absences() const;
+
+	void display_students_grades() const;
 
 	// Remove a student by ID
 	void remove_student(size_t id_student);
@@ -189,6 +289,9 @@ public:
 	// Get the course ID
 	size_t get_id();
 
+	std::string get_name_course() {
+		return course_name;
+	}
 	// Get a vector of id students
 	std::vector<size_t> get_id_students() const;
 	// Get a vector of id professors
@@ -199,24 +302,8 @@ private:
 	std::string course_name;
 	std::vector<Student> course_students;
 	std::vector<Profesor> course_professors;
-	std::vector<Nota> note_studenti;
-};
-
-class Absente {
-public:
-	Absente(const std::string& date, const std::string& reason)
-		: absence_date(date), absence_reason(reason), total_absences(1) {}
-
-	void add_absence();
-
-	void remove_absence();
-
-	void display_absence() const;
-
-private:
-	std::string absence_date;
-	std::string absence_reason;
-	size_t total_absences = 0;
+	Nota nota; 
+	Absente absente;
 };
 
 class Catedra {
@@ -224,6 +311,8 @@ public:
 	Catedra() {}
 	Catedra(size_t id, const std::string& name)
 		: id_catedra(id), catedra_name(name) {}
+
+
 
 	// Add a new student to the system
 	void add_students();
@@ -239,6 +328,14 @@ public:
 	void add_students_to_group();
 	// Add a new course
 	void add_course();
+
+	void add_grade_to_course(size_t id_prof);
+
+	void add_absence_to_course(size_t);
+
+	void display_absence_in_course(size_t);
+
+	void display_grades_in_course(size_t) const;
 	// Display all students in the system
 	void display_students() const;
 	// Display students in a course
@@ -280,6 +377,7 @@ public:
 	bool has_professor(size_t id_profesor) const;
 	// Returneaza un obiect student, carui ii apartine user/pass-ul
 	Student* authenticate_student(std::string &user, std::string &pass);
+	Profesor* authenticate_profesor(std::string &user, std::string &pass);
 
 private:
 	size_t id_catedra;
@@ -306,7 +404,7 @@ public:
 	const Catedra *get_catedra_student(size_t id_student);
 	// Funcția care returnează catedra la care apartine un profesor
 	// pe baza unui id_profesor
-	const Catedra *get_catedra_profesor(size_t id_profesor);
+	Catedra *get_catedra_profesor(size_t id_profesor);
 
 	void add_catedra();
 	void display_catedre() const;

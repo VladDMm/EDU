@@ -114,14 +114,13 @@ void Student::show_menu()
 		{
 		case 1:
 		{
-			if (catedra)
+			if (!catedra)
 			{
-				std::cout << "Afisare cursuri inscrise pentru catedra: " << catedra->get_name_catedra() << "\n";
-				catedra->show_student_courses(id_student);
+				std::cout << "Nu esti înscris la nicio catedră.\n";
+				break;
 			}
-
-			std::cout << "Nu esti înscris la nicio catedră.\n";
-			break;
+			std::cout << "Afisare cursuri inscrise pentru catedra: " << catedra->get_name_catedra() << "\n";
+			catedra->show_student_courses(id_student);
 		}
 		case 2:
 		{
@@ -147,7 +146,7 @@ void Profesor::show_menu()
 	SystemManagement *system = SystemManagement::getInstance();
 
 	// Apelează get_catedra_profesor pentru a obtine catedra profesorului curent
-	const Catedra* catedra = system->get_catedra_profesor(id_professor);
+	Catedra *catedra = system->get_catedra_profesor(id_professor);
 
 	if (!catedra)
 	{
@@ -155,43 +154,61 @@ void Profesor::show_menu()
 		return;
 	}
 
-	std::cout << "1. Afisare cursuri disponibile" << std::endl;
-	std::cout << "2. Afisare studenti la curs" << std::endl;
-	std::cout << "3. Adauga nota si absenta la curs" << std::endl;
-	std::cout << "4. Actualizeaza nota si absenta la curs" << std::endl;
-	std::cout << "0. Iesi" << std::endl;
-
 	short option;
-	std::cin >> option;
-	std::cin.ignore();
+	do
+	{
+		std::cout << "1. Afisare cursuri disponibile" << std::endl;
+		std::cout << "2. Afisare studenti la curs" << std::endl;
+		std::cout << "3. Adauga nota la curs" << std::endl;
+		std::cout << "4. Adauga absenta la curs" << std::endl;
+		std::cout << "5. Actualizeaza nota/absenta la curs" << std::endl;
+		std::cout << "6. Afisare note la curs" << std::endl;
+		std::cout << "7. Afisare absente la curs" << std::endl;
+		std::cout << "0. Iesi" << std::endl;
 
-	switch (option)
-	{
-	case 1:
-	{
-		catedra->show_professor_courses(id_professor);
-		break;
-	}
-	case 2:
-	{
-		catedra->display_students_in_course_by_prof(id_professor);
-		break;
-	}
-	case 3:
-	{
+		std::cin >> option;
+		std::cin.ignore();
 
-		break;
-	}
-	case 4:
-	{
-		break;
-	}
-	case 0:
-		break;
-	default:
-		std::cout << "Alegere incorecta!" << std::endl;
-		break;
-	}
+		switch (option)
+		{
+		case 1:
+		{
+			catedra->show_professor_courses(id_professor);
+			break;
+		}
+		case 2:
+		{
+			catedra->display_students_in_course_by_prof(id_professor);
+			break;
+		}
+		case 3:
+		{
+			catedra->add_grade_to_course(id_professor);
+			break;
+		}
+		case 4:
+		{
+			catedra->add_absence_to_course(id_professor);
+			break;
+		}
+		case 5:
+		{
+			
+			break;
+		}
+		case 6:
+			catedra->display_grades_in_course(id_professor);
+			break;
+		case 7:
+			catedra->display_absence_in_course(id_professor);
+		case 0:
+			break;
+		default:
+			std::cout << "Alegere incorecta!" << std::endl;
+			break;
+		}
+	} while (option != 0);
+	
 }
 
 std::string Profesor::get_full_name() const
@@ -272,33 +289,56 @@ const std::vector<Student> Grupa::get_students() const
 
 /*---------------------------Class Nota-----------------------------------*/
 
-
-//double Nota::calculate_average() const
-//{
-//	if (grades.empty()) return 0.0;
-//	double suma = 0;
-//	for (double n : grades) {
-//		suma += n;
-//	}
-//	return suma / grades.size();
-//}
-
-void Nota::search_grade(double grade_to_search) const
+void Nota::add_grade(std::string name_course, Student &student, double grade) 
 {
-	
+	auto now = std::chrono::system_clock::now();  // Obține timpul curent
+	this->course_name = name_course;
+	grades[student].emplace_back(grade, now);      // Adaugă nota cu data
 }
 
-void Nota::display_grades() const
+double Nota::calculate_average(const Student& student) const 
 {
-	std::cout << "Note: ";
-	for (const auto &pair : grades) 
-	{
-		std::cout << course_name << std::endl;
-		std::cout << pair.first.get_name() << ": ";
-		for (const auto &it : pair.second)
-			std::cout << it.first << "  " << it.second << std::endl;
+	auto it = grades.find(student);
+	if (it != grades.end() && !it->second.empty()) {
+		double sum = 0;
+		for (const auto& nota : it->second) {
+			sum += nota.get_value();
+		}
+		return sum / it->second.size();
+	}
+	return 0.0;  // Returnează 0 dacă studentul nu are note
+}
+
+bool Nota::search_grade(const Student& student, double grade_to_search) const 
+{
+	auto it = grades.find(student);
+	if (it != grades.end()) {
+		for (const auto& nota : it->second) {
+			if (nota.get_value() == grade_to_search) {
+				return true;  // Nota a fost găsită
+			}
+		}
+	}
+	return false; // Nota nu a fost găsită
+}
+
+
+void Nota::display_grades() const 
+{
+	for (const auto& pair : grades) {
+		const Student& student = pair.first;
+		const std::vector<NotaDetaliata> &student_grades = pair.second;
+
+		std::cout << "Curs: " << course_name << std::endl;
+		std::cout << "Student: " << student.get_name() << " - Note: ";
+		for (const auto& nota : student_grades) 
+		{
+			std::cout << ": " << nota.get_value() << " (Date: " << nota.get_date() << ") ";
+		}
+		std::cout << std::endl;
 	}
 }
+
 
 /*-------------------------End Class Nota--------------------------------*/
 
@@ -317,6 +357,15 @@ void Curs::add_students(const std::vector<Student> &student_list)
 void Curs::add_single_student(const Student &new_student)
 {
 	course_students.push_back(new_student);
+}
+
+void Curs::add_grade_for_student(std::string name_course, Student &student, double grade) {
+	nota.add_grade(name_course, student, grade); // Deleagă adăugarea notei către clasa Nota
+}
+
+void Curs::add_professor(Profesor &p_tmp)
+{
+	course_professors.push_back(p_tmp);
 }
 
 void Curs::remove_student(size_t id_student)
@@ -361,9 +410,19 @@ void Curs::display_professors_in_course()const
 		<< " (" << profesor.get_role() << ")" << std::endl;
 }
 
+void Curs::display_students_absences() const
+{
+	absente.display_absence();
+}
+
 void Curs::display_course() const
 {
 	std::cout <<" Curs: " << course_name << "\n";
+}
+
+void Curs::display_students_grades() const
+{
+	nota.display_grades();
 }
 
 //std::vector<Student> Curs::get_students() const
@@ -376,28 +435,41 @@ size_t Curs::get_id()
 	return id_course;
 }
 
-void Curs::add_professor(Profesor &p_tmp)
+void Curs::add_absence_for_student(std::string &name_course, const Student &student, std::string &absence)
 {
-	course_professors.push_back(p_tmp);
+	absente.add_absence(name_course, student, absence);
 }
 
 /*------------------------End Class Curs---------------------------------*/
 
 /*------------------------Class Absente---------------------------------*/
 
-void Absente::add_absence()
+void Absente::add_absence(std::string &name_course, const Student &student, std::string &reason)
 {
-	++total_absences;
-}
-
-void Absente::remove_absence()
-{
-	if (total_absences > 0) total_absences--;
+	auto now = std::chrono::system_clock::now();  // Obține timpul curent
+	this->course_name = name_course;
+	absences[student].emplace_back(reason, now);      // Adaugă absenta cu data
 }
 
 void Absente::display_absence() const
 {
-	std::cout << "Data: " << absence_date << ", Motiv: " << absence_reason << "\n";
+	for (const auto& pair : absences) {
+		const Student& student = pair.first;
+		const std::vector<AbsentaDetaliata> &student_absences = pair.second;
+
+		std::cout << "Curs: " << course_name << std::endl;
+		std::cout << "Student: " << student.get_name() << " - Absente: ";
+		for (const auto& nota : student_absences)
+		{
+			std::cout << ": " << nota.get_reason() << " (Date: " << nota.get_date() << ") ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+void Absente::remove_absence(const Student &student)
+{
+
 }
 
 /*----------------------End Class Absente-----------------------------------*/
@@ -467,7 +539,6 @@ void Catedra::add_students()
 	}
 	
 }
-
 // Funcție pentru a adăuga un profesor
 void Catedra::add_professor()
 {
@@ -858,6 +929,124 @@ void Catedra::add_students_to_course()
 	std::cout << "Studenți adăugați la cursul selectat.\n";
 }
 
+void Catedra::add_absence_to_course(size_t id_prof)
+{
+	system("cls");
+	this->show_professor_courses(id_prof);
+
+	std::cout << "Introdu ID-ul cursului: ";
+	short course_id;
+	std::cin >> course_id;
+	std::cin.ignore();
+
+	auto course_it = course_prof_map.find(course_id);
+	if (course_it == course_prof_map.end())
+	{
+		std::cout << "Nu este asa id la curs" << std::endl;
+		return;
+	}
+
+	for (auto &x : course_prof_map)
+	{
+		std::cout << x.first << ": ";
+		x.second.display_students_in_course();
+		std::cout << std::endl;
+	}
+	// Solicităm ID-ul studentului
+	std::cout << "Introduceți ID-ul studentului: ";
+	size_t student_id;
+	std::cin >> student_id;
+	std::cin.ignore();
+
+	// Căutăm studentul în sistem
+	auto student_it = students.find(student_id);
+	if (student_it == students.end()) {
+		std::cout << "Studentul cu ID-ul " << student_id << " nu a fost găsit.\n";
+		return;
+	}
+
+	std::cout << "Absenta a-absent/m-motivat" << std::endl;
+	std::string absence;
+	std::cin >> absence;
+
+	Student& student = student_it->second;
+	std::string name_cours = course_it->second.get_name_course();
+
+	course_it->second.add_absence_for_student(name_cours, student, absence);
+
+	std::cout << "Absenta a fost adaugata!" << std::endl;
+}
+
+void Catedra::add_grade_to_course(size_t id_prof)
+{
+	system("cls");
+	this->show_professor_courses(id_prof);
+
+	size_t course_id, student_id;
+	double grade_value;
+
+	// Solicităm ID-ul cursului
+	std::cout << "Introduceți ID-ul cursului: ";
+	std::cin >> course_id;
+
+	// Căutăm cursul după ID
+	auto course_it = course_prof_map.find(course_id);
+	if (course_it == course_prof_map.end()) {
+		std::cout << "Cursul cu ID-ul " << course_id << " nu a fost găsit.\n";
+		return;
+	}
+
+	for (auto &x : course_prof_map)
+	{
+		std::cout << x.first << ": ";
+		x.second.display_students_in_course();
+		std::cout << std::endl;
+	}
+	// Solicităm ID-ul studentului
+	std::cout << "Introduceți ID-ul studentului: ";
+
+	std::cin >> student_id;
+	std::cin.ignore();
+
+	// Căutăm studentul în sistem
+	auto student_it = students.find(student_id);
+	if (student_it == students.end()) {
+		std::cout << "Studentul cu ID-ul " << student_id << " nu a fost găsit.\n";
+		return;
+	}
+
+	// Solicităm valoarea notei
+	std::cout << "Introduceți nota: ";
+	std::cin >> grade_value;
+	std::cin.ignore();
+
+	// Adăugăm nota pentru studentul specificat în cursul selectat
+	Student& student = student_it->second;
+	std::string name_cours = course_it->second.get_name_course();
+	course_it->second.add_grade_for_student(name_cours, student, grade_value);
+
+	std::cout << "Nota a fost adăugată cu succes!\n";
+}
+
+void Catedra::display_absence_in_course(size_t id_prof)
+{
+	system("cls");
+	this->show_professor_courses(id_prof);
+
+	std::cout << "Alege cursul: ";
+	short course_id;
+	std::cin >> course_id;
+
+	auto it_course = course_prof_map.find(course_id);
+	if (it_course == course_prof_map.end())
+	{
+		std::cout << "Nu este asa id la curs" << std::endl;
+		return;
+	}
+
+	it_course->second.display_students_absences();
+}
+
 // Funcție pentru a afișa toate grupele
 void Catedra::display_groups() const
 {
@@ -876,6 +1065,25 @@ void Catedra::display_groups() const
 			std::cout << std::endl;
 		}
 	}
+}
+
+void Catedra::display_grades_in_course(size_t id_prof) const 
+{
+	system("cls");
+	this->show_professor_courses(id_prof);
+
+	std::cout << "Alege cursul: ";
+	short course_id;
+	std::cin >> course_id;
+
+	auto it_course = course_prof_map.find(course_id);
+	if (it_course == course_prof_map.end())
+	{
+		std::cout << "Nu este asa id la curs" << std::endl;
+		return;
+	}
+
+	it_course->second.display_students_grades();
 }
 
 // Funcție pentru a afișa toți studenții
@@ -925,6 +1133,7 @@ void Catedra::show_professor_courses(size_t id_profesor) const
 		}
 	}
 }
+
 // Afiseaza cursurile pentru studentul specific, functie pentru studenti
 void Catedra::show_student_courses(size_t id_student) const
 {
@@ -941,6 +1150,7 @@ void Catedra::show_student_courses(size_t id_student) const
 		}
 	}
 }
+
 // Funcție pentru a afișa toți profesorii
 void Catedra::display_professors() const
 {
@@ -992,6 +1202,7 @@ void Catedra::display_students_in_group() const
 	std::cout << "Studenții din grupa " << id_group << ":\n";
 	group_it->second.display_students_in_group();
 }
+
 // Afisare studentii de la curs dupa cursurile care ii apartin profesorului
 void Catedra::display_students_in_course_by_prof(size_t id_prof) const
 {
@@ -1052,6 +1263,7 @@ void Catedra::display_students_in_course_by_prof(size_t id_prof) const
 	//	}
 	//} while (option != 0);	
 }
+
 // Afisarea studentilor dupa cursurile selectate, functie pentru admin
 void Catedra::display_students_in_course() const
 {
@@ -1076,6 +1288,7 @@ void Catedra::display_students_in_course() const
 
 	course_it->second.display_students_in_course();
 }
+
 // Afisarea profesorilor dupa cursurile selectate, functie pentru admin
 void Catedra::display_professors_in_course() const
 {
@@ -1112,6 +1325,16 @@ Student* Catedra::authenticate_student(std::string &usern, std::string &pass)
 			return &(pair.second);
 	}
 	return nullptr; // daca nu se găseste studentul
+}
+
+Profesor* Catedra::authenticate_profesor(std::string &user, std::string &pass)
+{
+	for (auto &pair : professors)
+	{
+		if (pair.second.get_username() == user && pair.second.get_passw() == pass)
+			return &(pair.second);
+	}
+	return nullptr; // daca nu se găseste proful
 }
 
 /*----------------------End Class Catedra-----------------------------------------*/
@@ -1505,11 +1728,11 @@ const Catedra* SystemManagement::get_catedra_student(size_t id_student)
 	return nullptr; // Returneaza nullptr daca studentul nu este gasit in nicio catedra
 }
 
-const Catedra* SystemManagement::get_catedra_profesor(size_t id_profesor) 
+Catedra* SystemManagement::get_catedra_profesor(size_t id_profesor) 
 {
-	for (const auto& catedra_pair : catedre)
+	for (auto& catedra_pair : catedre)
 	{
-		const Catedra& catedra = catedra_pair.second;
+		Catedra& catedra = catedra_pair.second;
 		if (catedra.has_professor(id_profesor))
 		{ // Verifica dacă prof-ul este in catedra
 			return &catedra; // Returneaza pointer catre catedra gasita
