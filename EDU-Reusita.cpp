@@ -1,7 +1,6 @@
 ﻿#include "academic_records.h"
 
 SystemManagement *SystemManagement::instance = nullptr;
-
 int main() 
 {
 	SystemManagement *sistem = SystemManagement::getInstance();
@@ -10,8 +9,6 @@ int main()
 
 	Administrator admin(user_default, pass_default, sistem);
 
-	Profesor profesor;
-	
 	short option;
 	do
 	{

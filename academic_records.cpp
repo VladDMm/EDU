@@ -1,6 +1,7 @@
 ﻿#include <algorithm>
 #include "academic_records.h"
 
+static DatabaseConnection db_conn;
 /*------------------------Class Administrator---------------------------------*/
 
 void Administrator::show_menu()
@@ -31,13 +32,13 @@ void Administrator::show_menu()
 			sistem->add_group_to_catedra();
 			break;
 		case 3:
-			sistem->add_students_to_catedra();
+			sistem->add_students_to_catedra(db_conn);
 			break;
 		case 4:
-			sistem->add_professor_to_catedra();
+			sistem->add_professor_to_catedra(db_conn);
 			break;
 		case 5:
-			sistem->add_courses_to_catedra();
+			sistem->add_courses_to_catedra(db_conn);
 			break;
 		case 6:
 			sistem->add_students_to_group();
@@ -122,11 +123,18 @@ void Student::show_menu()
 			std::cout << "Afisare cursuri inscrise pentru catedra: " << catedra->get_name_catedra() << "\n";
 			catedra->show_student_courses(id_student);
 		}
+		break;
 		case 2:
 		{
 			
-			break;
+			
 		}
+		break;
+		case 3:
+		{
+			
+		}
+		break;
 		case 0:
 			break;
 		default:
@@ -161,9 +169,8 @@ void Profesor::show_menu()
 		std::cout << "2. Afisare studenti la curs" << std::endl;
 		std::cout << "3. Adauga nota la curs" << std::endl;
 		std::cout << "4. Adauga absenta la curs" << std::endl;
-		std::cout << "5. Actualizeaza nota/absenta la curs" << std::endl;
-		std::cout << "6. Afisare note la curs" << std::endl;
-		std::cout << "7. Afisare absente la curs" << std::endl;
+		std::cout << "5. Afisare note la curs" << std::endl;
+		std::cout << "6. Afisare absente la curs" << std::endl;
 		std::cout << "0. Iesi" << std::endl;
 
 		std::cin >> option;
@@ -192,14 +199,9 @@ void Profesor::show_menu()
 			break;
 		}
 		case 5:
-		{
-			
-			break;
-		}
-		case 6:
 			catedra->display_grades_in_course(id_professor);
 			break;
-		case 7:
+		case 6:
 			catedra->display_absence_in_course(id_professor);
 		case 0:
 			break;
@@ -321,7 +323,6 @@ bool Nota::search_grade(const Student& student, double grade_to_search) const
 	}
 	return false; // Nota nu a fost găsită
 }
-
 
 void Nota::display_grades() const 
 {
@@ -474,7 +475,7 @@ void Absente::remove_absence(const Student &student)
 
 /*----------------------End Class Absente-----------------------------------*/
 /*----------------------Class Catedra-----------------------------------------*/
-void Catedra::add_students()
+void Catedra::add_students(DatabaseConnection& db_conn)
 {
 	system("cls");
 	std::cin.ignore();
@@ -500,6 +501,7 @@ void Catedra::add_students()
 
 				Student student_temp(student_id, student_name, user, pass);
 				students[student_id] = student_temp;
+				student_temp.insert_into_db(db_conn);
 				++student_id;
 				std::cin.ignore();
 			}
@@ -527,10 +529,9 @@ void Catedra::add_students()
 
 				Student student_temp(student_id, student_name, user, pass);
 				students[student_id] = student_temp;
-				//	students.emplace_back(student_id, student_name);
+				student_temp.insert_into_db(db_conn);
 				++student_id;
 				std::cin.ignore();
-				//students.push_back(student_temp);
 			}
 			else
 				break;
@@ -540,7 +541,7 @@ void Catedra::add_students()
 	
 }
 // Funcție pentru a adăuga un profesor
-void Catedra::add_professor()
+void Catedra::add_professor(DatabaseConnection& db_conn)
 {
 	system("cls");
 	std::cin.ignore();
@@ -570,7 +571,7 @@ void Catedra::add_professor()
 				// Creăm un obiect Profesor cu datele introduse
 				Profesor profesor_temp(professor_id, professor_name, professor_role, user, pass);
 				professors[professor_id] = profesor_temp;
-				std::cout << "Profesorul a fost adaugat cu succes!" << std::endl;
+				profesor_temp.insert_into_db(db_conn);
 				++professor_id;
 			}
 			else
@@ -594,12 +595,12 @@ void Catedra::add_professor()
 				std::cin >> user;
 				std::cout << "Introdu parola: ";
 				std::cin >> pass;
-				std::cin.ignore();
 				// Creăm un obiect Profesor cu datele introduse
 				Profesor profesor_temp(professor_id, professor_name, professor_role, user, pass);
 				professors[professor_id] = profesor_temp;
-				std::cout << "Profesorul a fost adaugat cu succes!" << std::endl;
+				profesor_temp.insert_into_db(db_conn);
 				++professor_id;
+				std::cin.ignore();
 			}
 			else
 				break;
@@ -608,7 +609,7 @@ void Catedra::add_professor()
 	}
 }
 
-void Catedra::add_course()
+void Catedra::add_course(DatabaseConnection& db_conn)
 {
 	system("cls");
 	std::cin.ignore();
@@ -630,6 +631,7 @@ void Catedra::add_course()
 			if (course_name.size() != 0)
 			{
 				Curs curs_temp(course_id, course_name);
+				curs_temp.insert_into_db(db_conn);
 				course_prof_map[course_id] = curs_temp;
 				++course_id;
 			}
@@ -637,14 +639,6 @@ void Catedra::add_course()
 				break;
 
 		} while (true);
-
-	/*	course_id = (--course_prof_map.end())->first;
-		++course_id;
-		for (const auto &x : courses)
-		{
-			course_prof_map[course_id] = x;
-			++course_id;
-		}*/
 	}
 
 	else
@@ -658,7 +652,7 @@ void Catedra::add_course()
 			{
 				Curs curs_temp(course_id, course_name);
 				course_prof_map[course_id] = curs_temp;
-				//courses.push_back(curs_temp);
+				curs_temp.insert_into_db(db_conn);
 				++course_id;
 			}
 			else
@@ -693,7 +687,7 @@ void Catedra::add_group()
 				std::cin.ignore();
 				// Creăm obiectul de tip Grupa și îl adăugăm în map
 				Grupa group_temp(group_id, group_name, group_year);
-
+				
 				groups.emplace(group_id, group_temp);
 				++group_id;
 				std::cout << "Grupa a fost adaugata cu succes!\n";
@@ -1462,7 +1456,7 @@ void SystemManagement::add_group_to_catedra()
 
 }
 
-void SystemManagement::add_students_to_catedra()
+void SystemManagement::add_students_to_catedra(DatabaseConnection& db_conn)
 {
 	system("cls");
 
@@ -1478,14 +1472,14 @@ void SystemManagement::add_students_to_catedra()
 	
 	if (it_catedra != catedre.end())
 	{
-		it_catedra->second.add_students();
+		it_catedra->second.add_students(db_conn);
 		std::cout << "Studenti adaugati cu succes" << std::endl;
 	
 	}
 	
 }
 
-void SystemManagement::add_professor_to_catedra()
+void SystemManagement::add_professor_to_catedra(DatabaseConnection& db_conn)
 {
 	system("cls");
 
@@ -1501,12 +1495,12 @@ void SystemManagement::add_professor_to_catedra()
 
 	if (it_catedra != catedre.end())
 	{
-		it_catedra->second.add_professor();
+		it_catedra->second.add_professor(db_conn);
 		std::cout << "Profesori adaugati cu succes" << std::endl;
 	}
 }
 
-void SystemManagement::add_courses_to_catedra()
+void SystemManagement::add_courses_to_catedra(DatabaseConnection& db_conn)
 {
 	system("cls");
 
@@ -1522,7 +1516,7 @@ void SystemManagement::add_courses_to_catedra()
 
 	if (it_catedra != catedre.end())
 	{
-		it_catedra->second.add_course();
+		it_catedra->second.add_course(db_conn);
 		std::cout << "Cursuri adaugate cu succes" << std::endl;
 	}
 }

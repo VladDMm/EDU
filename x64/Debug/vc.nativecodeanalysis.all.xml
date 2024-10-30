@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>93</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Student::id_student' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Student::{ctor}</FUNCTION>
+    <DECORATED>??0Student@@QEAA@XZ</DECORATED>
+    <FUNCLINE>93</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>95</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Student::id_student' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Student::{ctor}</FUNCTION>
+    <DECORATED>??0Student@@QEAA@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z</DECORATED>
+    <FUNCLINE>95</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>160</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Profesor::id_professor' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Profesor::{ctor}</FUNCTION>
+    <DECORATED>??0Profesor@@QEAA@XZ</DECORATED>
+    <FUNCLINE>160</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>161</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Profesor::id_professor' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Profesor::{ctor}</FUNCTION>
+    <DECORATED>??0Profesor@@QEAA@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z</DECORATED>
+    <FUNCLINE>161</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>192</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Grupa::year_of_study' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Grupa::{ctor}</FUNCTION>
+    <DECORATED>??0Grupa@@QEAA@XZ</DECORATED>
+    <FUNCLINE>192</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>313</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Curs::id_course' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Curs::{ctor}</FUNCTION>
+    <DECORATED>??0Curs@@QEAA@XZ</DECORATED>
+    <FUNCLINE>313</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>347</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Curs::id_course' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Curs::{ctor}</FUNCTION>
+    <DECORATED>??0Curs@@QEAA@AEBVStudent@@@Z</DECORATED>
+    <FUNCLINE>347</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>409</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Catedra::id_catedra' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Catedra::{ctor}</FUNCTION>
+    <DECORATED>??0Catedra@@QEAA@XZ</DECORATED>
+    <FUNCLINE>409</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>539</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Administrator::sistem' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Administrator::{ctor}</FUNCTION>
+    <DECORATED>??0Administrator@@QEAA@XZ</DECORATED>
+    <FUNCLINE>539</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\vs project\edu-reusita</FILEPATH>
+      <FILENAME>academic_records.h</FILENAME>
+      <LINE>543</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Administrator::sistem' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Administrator::{ctor}</FUNCTION>
+    <DECORATED>??0Administrator@@QEAA@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z</DECORATED>
+    <FUNCLINE>543</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>
