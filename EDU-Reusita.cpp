@@ -1,13 +1,16 @@
-﻿#include "academic_records.h"
+﻿//#include "academic_records.h"
+
+#include "IncludesCentral.h"
 
 SystemManagement *SystemManagement::instance = nullptr;
+
 int main() 
 {
 	SystemManagement *sistem = SystemManagement::getInstance();
 
-	std::string user_default = "admin", pass_default = "admin";
+	std::string full_name = "decan", user_default = "admin", pass_default = "admin", email = "emailad@gmail.com";
 
-	Administrator admin(user_default, pass_default, sistem);
+	Administrator admin(1, full_name, email, user_default, pass_default, sistem);
 
 	short option;
 	do
@@ -63,7 +66,23 @@ int main()
 			}
 			break;
 		case 3:
+		{
 			admin.show_menu();
+			break;
+			std::cout << "Introduceti username: ";
+			std::cin >> user;
+			std::cout << "Introduceti parola: ";
+			std::cin >> pass;
+			std::cin.ignore();
+			//Administrator *admin = admin->authenticate_admin(user, pass);
+			/*if (admin)
+			{
+				std::cout << "Logare reusita" << std::endl;
+				admin->show_menu();
+				break;
+			}*/
+			std::cout << "Date incorecte" << std::endl;
+		}
 			break;
 		case 0:
 			break;

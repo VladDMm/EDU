@@ -1,43 +1,78 @@
-﻿  academic_records.cpp
-c:\vs project\edu-reusita\academic_records.h(35): warning C4566: character represented by universal-character-name '\u0219' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.h(35): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.h(294): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-c:\vs project\edu-reusita\academic_records.cpp(120): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(120): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(755): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(861): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(861): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(873): warning C4566: character represented by universal-character-name '\u0219' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(873): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(873): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(881): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(887): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(887): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(892): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(900): warning C4566: character represented by universal-character-name '\u0219' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(900): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(900): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(908): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(923): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(923): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(950): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(958): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(983): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(989): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1000): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1008): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1013): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1022): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1049): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1049): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1110): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1110): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1110): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1153): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1153): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1186): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1191): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1196): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
-c:\vs project\edu-reusita\academic_records.cpp(1347): warning C4267: '=': conversion from 'size_t' to 'short', possible loss of data
-c:\vs project\edu-reusita\academic_records.cpp(1452): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+﻿  Absente.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  academic_records.cpp
+  Admin.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  Catedra.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+c:\vs project\edu-reusita\catedra.cpp(286): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\vs project\edu-reusita\catedra.cpp(456): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(456): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(468): warning C4566: character represented by universal-character-name '\u0219' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(468): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(468): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(476): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(482): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(482): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(487): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(495): warning C4566: character represented by universal-character-name '\u0219' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(495): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(495): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(503): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(518): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(518): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(545): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(553): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(578): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(584): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(595): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(603): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(608): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(617): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(749): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(749): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(782): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(787): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\catedra.cpp(792): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+  Curs.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  DatabaseConnection.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+c:\vs project\edu-reusita\databaseconnection.cpp(35): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\databaseconnection.cpp(59): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\databaseconnection.cpp(99): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\databaseconnection.cpp(103): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+  EDU-Reusita.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  Grupa.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  Nota.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  Professor.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  Student.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+c:\vs project\edu-reusita\student.cpp(53): warning C4566: character represented by universal-character-name '\u021B' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\student.cpp(81): warning C4566: character represented by universal-character-name '\u00EE' cannot be represented in the current code page (1251)
+c:\vs project\edu-reusita\student.cpp(81): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+  SystemManagement.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+c:\vs project\edu-reusita\systemmanagement.cpp(43): warning C4267: '=': conversion from 'size_t' to 'short', possible loss of data
+c:\vs project\edu-reusita\systemmanagement.cpp(150): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\vs project\edu-reusita\systemmanagement.cpp(179): warning C4566: character represented by universal-character-name '\u0103' cannot be represented in the current code page (1251)
+  User.cpp
+c:\vs project\edu-reusita\user.h(17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\vs project\edu-reusita\absente.h(16): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+  Generating Code...
   EDU-Reusita.vcxproj -> C:\VS project\EDU-Reusita\x64\Debug\EDU-Reusita.exe

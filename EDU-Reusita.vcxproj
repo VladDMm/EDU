@@ -76,6 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -83,6 +84,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,13 +95,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\MySQL\MySQL Connector C++ 9.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\include;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mysqlcppconn.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\MySQL\MySQL Connector C++ 9.1\lib64;C:\Program Files\MySQL\MySQL Connector C++ 9.1\lib64\vs14</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mariadbcpp.lib;libmariadb.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\Program Files\MariaDB 11.4\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,13 +113,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)_CRT_SECURE_NO_WARNINGS;;_CRT_SECURE_NO_WARNIGS_;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\include;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\OpenSSLWin64\include\openssl;C:\Program Files\OpenSSLWin64\include;C:\Program Files\MariaDB\MariaDB Connector C 64-bit\include;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mariadbcpp.lib;libmariadb.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\Program Files\MariaDB 11.4\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcrypto.lib;libssl.lib;mariadbcpp.lib;libmariadb.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\OpenSSLWin64\lib\VC\x64\MDd;C:\Program Files\OpenSSLWin64\lib\VC\x64\MD;C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\Program Files\MariaDB 11.4\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,15 +133,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\MySQL\MySQL Connector C++ 9.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\include;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mysqlcppconn.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\MySQL\MySQL Connector C++ 9.1\lib64;C:\Program Files\MySQL\MySQL Connector C++ 9.1\lib64\vs14</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mariadbcpp.lib;libmariadb.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\Program Files\MariaDB 11.4\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,23 +155,46 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)_CRT_SECURE_NO_WARNINGS;;_CRT_SECURE_NO_WARNIGS_;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\include;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\OpenSSLWin64\include\openssl;C:\Program Files\OpenSSLWin64\include;C:\Program Files\MariaDB\MariaDB Connector C 64-bit\include;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mariadbcpp.lib;libmariadb.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\Program Files\MariaDB 11.4\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcrypto.lib;libssl.lib;mariadbcpp.lib;libmariadb.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\OpenSSLWin64\lib\VC\x64\MDd;C:\Program Files\OpenSSLWin64\lib\VC\x64\MD;C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\Program Files\MariaDB 11.4\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Absente.cpp" />
     <ClCompile Include="academic_records.cpp" />
+    <ClCompile Include="Admin.cpp" />
+    <ClCompile Include="Catedra.cpp" />
+    <ClCompile Include="Curs.cpp" />
+    <ClCompile Include="DatabaseConnection.cpp" />
     <ClCompile Include="EDU-Reusita.cpp" />
+    <ClCompile Include="Grupa.cpp" />
+    <ClCompile Include="Nota.cpp" />
+    <ClCompile Include="Professor.cpp" />
+    <ClCompile Include="Student.cpp" />
+    <ClCompile Include="SystemManagement.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Absente.h" />
     <ClInclude Include="academic_records.h" />
+    <ClInclude Include="Admin.h" />
+    <ClInclude Include="Catedra.h" />
+    <ClInclude Include="Curs.h" />
+    <ClInclude Include="DatabaseConnection.h" />
+    <ClInclude Include="Grupa.h" />
+    <ClInclude Include="IncludesCentral.h" />
+    <ClInclude Include="Nota.h" />
+    <ClInclude Include="Professor.h" />
+    <ClInclude Include="Student.h" />
+    <ClInclude Include="SystemManagement.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
